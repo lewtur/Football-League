@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using Kata.Data.Footballer;
 
 namespace Kata.Data
 {
@@ -13,6 +14,7 @@ namespace Kata.Data
         public int Points => Wins * 3 + Draws;
         public int Played => Wins + Draws + Losses;
         public IList<Player> Squad { get; set; }
+        public Manager Manager { get; set; }
 
         public Team(string name)
         {
@@ -24,6 +26,11 @@ namespace Kata.Data
         {
             player.Teams.Add(this);
             Squad.Add(player);
+        }
+
+        public void AppointManager(Manager manager)
+        {
+            Manager = manager;
         }
     }
 }

@@ -1,23 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kata.Data
+namespace Kata.Data.Footballer
 {
-    public class Player
+    public abstract class Footballer
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Name => $"{FirstName} {LastName}";
         public List<Team> Teams { get; set; }
-        public Team CurrentTeam => Teams.Last();
-        public SortedList<int, Position> Positions { get; }
+        public virtual Team CurrentTeam => Teams.Last();
 
-        public Player(string firstName, string lastName)
+        protected Footballer(string firstName, string lastName)
         {
             FirstName = firstName;
             LastName = lastName;
-            Positions = new SortedList<int, Position>();
+            Teams = new List<Team>();
         }
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="MatchTests.cs" />
     <Compile Include="PlayerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kata.Data\Kata.Domain.csproj">

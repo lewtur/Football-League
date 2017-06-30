@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Kata.Data;
+using Kata.Data.Footballer;
 
 namespace Kata.Tests
 {
@@ -15,41 +16,42 @@ namespace Kata.Tests
         }
 
         [TestMethod]
-        public void APlayerShouldBelongToATeam()
+        public void ATeamShouldBeAbleToSignAPlayer()
         {
             // Given
-            var benMee = new Player("Ben", "Mee", _burnley);
+            var benMee = new Player("Ben", "Mee");
 
             // When
-            var squad = _burnley.Squad;
+            _burnley.SignPlayer(benMee);
 
             // Then
-            Assert.IsTrue(squad.Any(x => x.FirstName == "Ben" && x.LastName == "Mee"));
+            Assert.IsTrue(benMee.CurrentTeam.Name == "Burnley FC");
         }
 
         [TestMethod]
         public void APlayerShouldHaveAPositionInATeam()
         {
             // Given
-            var scottArfield = new Player("Scott", "Arfield", _burnley);
+            var scottArfield = new Player("Scott", "Arfield");
 
             // When
+            _burnley.SignPlayer(scottArfield);
             scottArfield.Positions.Add(1, Position.LeftWinger);
 
             // Then
-            Assert.IsTrue(_burnley.Squad.Any(x => x.FirstName == "Scott" && x.LastName == "Arfield" && x.Positions[1] == Position.LeftWinger));
+            Assert.IsTrue(_burnley.Squad.Any(x => x.Name == "Scott Arfield" && x.Positions[1] == Position.LeftWinger));
         }
 
         [TestMethod]
         public void APlayerShouldHaveASecondPositionWhichIsSecondInOrderOfTheirPositions()
         {
             // Given
-            var georgeBoyd = new Player("George", "Boyd", _burnley);
+            var georgeBoyd = new Player("George", "Boyd");
 
             // When
             georgeBoyd.Positions.Add(3, Position.RightWinger);
             georgeBoyd.Positions.Add(1, Position.LeftWinger);
-           var positions = georgeBoyd.Positions.Values;
+            var positions = georgeBoyd.Positions.Values;
 
             // Then
             Assert.AreEqual(positions.First(), Position.LeftWinger);
@@ -59,11 +61,12 @@ namespace Kata.Tests
         public void APlayerShouldBeAbleToTransferToANewClub()
         {
             // Given
-            var dannyIngs = new Player("Danny", "Ings", _burnley);
+            var dannyIngs = new Player("Danny", "Ings");
             var liverpool = new Team("Liverpool FC");
 
             // When
-            dannyIngs.Team = liverpool;
+            _burnley.SignPlayer(dannyIngs);
+            liverpool.SignPlayer(dannyIngs);
 
             // Then
             Assert.IsTrue(dannyIngs.CurrentTeam.Name == "Liverpool FC");

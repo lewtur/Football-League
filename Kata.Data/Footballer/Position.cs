@@ -1,4 +1,4 @@
-namespace Kata.Data
+namespace Kata.Data.Footballer
 {
     public enum Position
     {
