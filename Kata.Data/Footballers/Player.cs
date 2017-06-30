@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Kata.Data.Footballer
+namespace Kata.Data.Footballers
 {
     public class Player : Footballer
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Kata.Data;
 using Kata.Data.Exceptions;
-using Kata.Data.Footballer;
+using Kata.Data.Footballers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Kata.Tests

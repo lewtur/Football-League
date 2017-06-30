@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Kata.Data.Footballer;
+using Kata.Data.Footballers;
 
 namespace Kata.Data
 {

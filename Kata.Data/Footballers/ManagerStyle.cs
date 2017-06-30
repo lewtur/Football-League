@@ -1,4 +1,4 @@
-namespace Kata.Data.Footballer
+namespace Kata.Data.Footballers
 {
     public enum ManagerStyle
     {

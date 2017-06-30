@@ -1,39 +1,49 @@
+using System.Collections.Generic;
 using Kata.Data.Exceptions;
+using Kata.Data.Matches.Events;
 
-namespace Kata.Data
+namespace Kata.Data.Matches
 {
     public class Match
     {
         public Team HomeTeam { get; }
         public Team AwayTeam { get; }
+        public IList<Goal> Goals { get; }
+        public Score Score { get; set; }
 
-        private int _homeGoals;
-        private int _awayGoals;
         private bool _matchEnded;
 
         public Match(Team home, Team away)
         {
             HomeTeam = home;
             AwayTeam = away;
-            _matchEnded = false;
+            Goals = new List<Goal>();
+            Score = new Score();
+            _matchEnded = false;            
         }
 
         public void SetScore(int homeGoals, int awayGoals)
         {
             if (_matchEnded) throw new UpdatedAFinishedMatchException();
 
-            _homeGoals = homeGoals;
-            _awayGoals = awayGoals;
+            Score = new Score { HomeGoals = homeGoals, AwayGoals = awayGoals };
+        }
+
+        public void Event(IMatchEvent matchEvent, int minute)
+        {
+            if (_matchEnded) throw new UpdatedAFinishedMatchException();
+
+            matchEvent.AffectMatch(this, minute);
         }
 
         public MatchResult End()
         {
-            if (_homeGoals > _awayGoals)
+            if (Score.HomeGoals > Score.AwayGoals)
             {
                 ++HomeTeam.Wins;
                 ++AwayTeam.Losses;
             }
-            else if (_homeGoals < _awayGoals)
+            else if (Score.HomeGoals < Score.AwayGoals)
             {
                 ++HomeTeam.Losses;
                 ++AwayTeam.Wins;
@@ -45,7 +55,7 @@ namespace Kata.Data
             }
 
             _matchEnded = true;
-            return new MatchResult(HomeTeam, _homeGoals, AwayTeam, _awayGoals);
+            return new MatchResult(HomeTeam, AwayTeam, Goals);
         }
     }
 }

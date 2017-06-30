@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Kata.Data;
 using Kata.Data.Exceptions;
+using Kata.Data.Footballers;
+using Kata.Data.Matches.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Kata.Tests
@@ -103,6 +106,22 @@ namespace Kata.Tests
 
             // Then
             Assert.Fail("Exception should have been thrown - Can't change the score when a match has finished");
+        }
+
+        [TestMethod]
+        public void APlayerShouldBeAbleToScoreInAGame()
+        {
+            // Given
+            var andreGray = new Player("Andre", "Gray");
+            _burnley.SignPlayer(andreGray);
+
+            // When
+            var match = _league.PlayMatch(_burnley, _watford);
+            match.Event(new HomeGoalScoredEvent(andreGray), 12);
+            var result = match.End();
+
+            // Then
+            Assert.IsTrue(result.Goals.Any(x => x.Player.Name == "Andre Gray"));
         }
     }
 }

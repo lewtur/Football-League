@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Kata.Data;
-using Kata.Data.Footballer;
+using Kata.Data.Footballers;
 
 namespace Kata.Tests
 {

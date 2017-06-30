@@ -1,6 +1,6 @@
 using Kata.Data.Exceptions;
 
-namespace Kata.Data.Footballer
+namespace Kata.Data.Footballers
 {
     public class Manager : Footballer
     {

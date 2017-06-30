@@ -40,15 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Footballer\Footballer.cs" />
+    <Compile Include="Footballers\Footballer.cs" />
     <Compile Include="Exceptions\NonRetiredPlayerBecomingManagerException.cs" />
     <Compile Include="League.cs" />
-    <Compile Include="Footballer\Manager.cs" />
-    <Compile Include="Footballer\ManagerStyle.cs" />
-    <Compile Include="Match.cs" />
-    <Compile Include="MatchResult.cs" />
-    <Compile Include="Footballer\Player.cs" />
-    <Compile Include="Footballer\Position.cs" />
+    <Compile Include="Footballers\Manager.cs" />
+    <Compile Include="Footballers\ManagerStyle.cs" />
+    <Compile Include="Matches\MatchResult.cs" />
+    <Compile Include="Footballers\Player.cs" />
+    <Compile Include="Footballers\Position.cs" />
+    <Compile Include="Matches\Goal.cs" />
+    <Compile Include="Matches\Events\HomeGoalScoredEvent.cs" />
+    <Compile Include="Matches\Events\IMatchEvent.cs" />
+    <Compile Include="Matches\Match.cs" />
+    <Compile Include="Matches\Score.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Exceptions\TeamNotInLeagueException.cs" />

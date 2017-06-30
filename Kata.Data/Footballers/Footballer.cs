@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kata.Data.Footballer
+namespace Kata.Data.Footballers
 {
     public abstract class Footballer
     {
