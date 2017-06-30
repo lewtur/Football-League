@@ -9,24 +9,35 @@ namespace Kata.Data.Matches
         public Team HomeTeam { get; }
         public Team AwayTeam { get; }
         public IList<Goal> Goals { get; }
-        public Score Score { get; set; }
+        public int GameWeek { get; }
 
         private bool _matchEnded;
 
-        public Match(Team home, Team away)
+        public Match(Team home, Team away, int gameWeek)
         {
             HomeTeam = home;
             AwayTeam = away;
+            GameWeek = gameWeek;
             Goals = new List<Goal>();
-            Score = new Score();
             _matchEnded = false;            
         }
 
-        public void SetScore(int homeGoals, int awayGoals)
+        public Score GetScore()
         {
-            if (_matchEnded) throw new UpdatedAFinishedMatchException();
+            int home = 0, away = 0;
+            foreach (var goal in Goals)
+            {
+                if (goal.Team.Name == HomeTeam.Name)
+                {
+                    ++home;
+                }
+                else
+                {
+                    ++away;
+                }
+            }
 
-            Score = new Score { HomeGoals = homeGoals, AwayGoals = awayGoals };
+            return new Score { HomeGoals = home, AwayGoals = away };
         }
 
         public void Event(IMatchEvent matchEvent, int minute)
@@ -36,26 +47,27 @@ namespace Kata.Data.Matches
             matchEvent.AffectMatch(this, minute);
         }
 
-        public MatchResult End()
+        public void End()
         {
-            if (Score.HomeGoals > Score.AwayGoals)
+            var score = GetScore();
+
+            if (score.HomeGoals > score.AwayGoals)
             {
-                ++HomeTeam.Wins;
-                ++AwayTeam.Losses;
+                ++HomeTeam.CurrentSeason.Wins;
+                ++AwayTeam.CurrentSeason.Losses;
             }
-            else if (Score.HomeGoals < Score.AwayGoals)
+            else if (score.HomeGoals < score.AwayGoals)
             {
-                ++HomeTeam.Losses;
-                ++AwayTeam.Wins;
+                ++HomeTeam.CurrentSeason.Losses;
+                ++AwayTeam.CurrentSeason.Wins;
             }
             else
             {
-                ++HomeTeam.Draws;
-                ++AwayTeam.Draws;
+                ++HomeTeam.CurrentSeason.Draws;
+                ++AwayTeam.CurrentSeason.Draws;
             }
 
             _matchEnded = true;
-            return new MatchResult(HomeTeam, AwayTeam, Goals);
         }
     }
 }

@@ -14,12 +14,19 @@ namespace Kata.Tests
     {
         private readonly Team _burnley;
         private readonly Team _watford;
+        private readonly Player _andreGray;
+        private readonly Player _troyDeeney;
         private readonly League _league;
 
         public MatchTests()
         {
             _burnley = new Team("Burnley FC");
             _watford = new Team("Watford FC");
+            _andreGray = new Player("Andre", "Gray");
+            _troyDeeney = new Player("Troy", "Deeney");
+
+            _burnley.SignPlayer(_andreGray);
+            _watford.SignPlayer(_troyDeeney);
             _league = new League { Teams = new List<Team> { _burnley, _watford }, Id = 1, Name = "Premier League" };
         }
 
@@ -27,34 +34,35 @@ namespace Kata.Tests
         public void IfBurnleyBeatWatfordTheyShouldHaveThreeMorePointsThanBeforeAndWatfordShouldHaveTheSame()
         {
             // Given
-            var burnleyPointsBefore = _burnley.Points;
-            var watfordPointsBefore = _watford.Points;
+            var burnleyPointsBefore = _burnley.CurrentSeason.Points;
+            var watfordPointsBefore = _watford.CurrentSeason.Points;
 
             // When
-            var match = _league.PlayMatch(_burnley, _watford);
-            match.SetScore(2, 0);
+            var match = _league.PlayMatch(_burnley, _watford, 1);
+            match.Event(new GoalScoredEvent(_andreGray), 12);
             match.End();
 
             // Then
-            Assert.IsTrue(_burnley.Points == burnleyPointsBefore + 3);
-            Assert.IsTrue(_watford.Points == watfordPointsBefore);
+            Assert.IsTrue(_burnley.CurrentSeason.Points == burnleyPointsBefore + 3);
+            Assert.IsTrue(_watford.CurrentSeason.Points == watfordPointsBefore);
         }
 
         [TestMethod]
         public void IfBurnleyDrawWithWatfordBothTeamsShouldHaveAnExtraPoint()
         {
             // Given
-            var burnleyPointsBefore = _burnley.Points;
-            var watfordPointsBefore = _watford.Points;
+            var burnleyPointsBefore = _burnley.CurrentSeason.Points;
+            var watfordPointsBefore = _watford.CurrentSeason.Points;
             
             // When
-            var match = _league.PlayMatch(_burnley, _watford);
-            match.SetScore(1, 1);
+            var match = _league.PlayMatch(_burnley, _watford, 1);
+            match.Event(new GoalScoredEvent(_andreGray), 14);
+            match.Event(new GoalScoredEvent(_troyDeeney), 84);
             match.End();
 
             // Then
-            Assert.IsTrue(_burnley.Points == burnleyPointsBefore + 1);
-            Assert.IsTrue(_watford.Points == watfordPointsBefore + 1);
+            Assert.IsTrue(_burnley.CurrentSeason.Points == burnleyPointsBefore + 1);
+            Assert.IsTrue(_watford.CurrentSeason.Points == watfordPointsBefore + 1);
         }
 
         [TestMethod]
@@ -65,7 +73,7 @@ namespace Kata.Tests
             var blackburn = new Team("Blackburn Rovers");
 
             // When
-            _league.PlayMatch(_burnley, blackburn);
+            _league.PlayMatch(_burnley, blackburn, 1);
 
             // Then
             Assert.Fail("Exception should have been thrown - Blackburn are not in the prem");          
@@ -75,21 +83,22 @@ namespace Kata.Tests
         public void WhenBurnleyWinOneDrawOneAndLoseOneTheyShouldHaveFourPointsAndThreeGamesPlayed()
         {
             // Given
-            var match1 = _league.PlayMatch(_burnley, _watford);
-            var match2 = _league.PlayMatch(_burnley, _watford);
-            var match3 = _league.PlayMatch(_burnley, _watford);
+            var match1 = _league.PlayMatch(_burnley, _watford, 1);
+            var match2 = _league.PlayMatch(_burnley, _watford, 1);
+            var match3 = _league.PlayMatch(_burnley, _watford, 1);
 
             // When
-            match1.SetScore(1, 0);
+            match1.Event(new GoalScoredEvent(_andreGray), 12);
             match1.End();
-            match2.SetScore(3, 3);
+            match2.Event(new GoalScoredEvent(_andreGray), 34);
+            match2.Event(new GoalScoredEvent(_troyDeeney), 44);
             match2.End();
-            match3.SetScore(2, 4);
+            match3.Event(new GoalScoredEvent(_troyDeeney), 60);
             match3.End();
 
             // Then
-            Assert.AreEqual(_burnley.Points, 4);
-            Assert.AreEqual(_burnley.Played, 3);
+            Assert.AreEqual(_burnley.CurrentSeason.Points, 4);
+            Assert.AreEqual(_burnley.CurrentSeason.Played, 3);
         }
 
         [TestMethod]
@@ -97,12 +106,12 @@ namespace Kata.Tests
         public void ScoreShouldNotBeAbleToBeChangedWhenTheMatchHasFinished()
         {
             // Given
-            var match = _league.PlayMatch(_burnley, _watford);
+            var match = _league.PlayMatch(_burnley, _watford, 1);
 
             // When
-            match.SetScore(3, 1);
+            match.Event(new GoalScoredEvent(_andreGray), 23);
             match.End();
-            match.SetScore(1, 2);
+            match.Event(new GoalScoredEvent(_andreGray), 28);
 
             // Then
             Assert.Fail("Exception should have been thrown - Can't change the score when a match has finished");
@@ -116,12 +125,12 @@ namespace Kata.Tests
             _burnley.SignPlayer(andreGray);
 
             // When
-            var match = _league.PlayMatch(_burnley, _watford);
-            match.Event(new HomeGoalScoredEvent(andreGray), 12);
-            var result = match.End();
+            var match = _league.PlayMatch(_burnley, _watford, 1);
+            match.Event(new GoalScoredEvent(andreGray), 64);
+            match.End();
 
             // Then
-            Assert.IsTrue(result.Goals.Any(x => x.Player.Name == "Andre Gray"));
+            Assert.IsTrue(match.Goals.Any(x => x.Player.Name == "Andre Gray"));
         }
     }
 }

@@ -45,11 +45,10 @@
     <Compile Include="League.cs" />
     <Compile Include="Footballers\Manager.cs" />
     <Compile Include="Footballers\ManagerStyle.cs" />
-    <Compile Include="Matches\MatchResult.cs" />
     <Compile Include="Footballers\Player.cs" />
     <Compile Include="Footballers\Position.cs" />
     <Compile Include="Matches\Goal.cs" />
-    <Compile Include="Matches\Events\HomeGoalScoredEvent.cs" />
+    <Compile Include="Matches\Events\GoalScoredEvent.cs" />
     <Compile Include="Matches\Events\IMatchEvent.cs" />
     <Compile Include="Matches\Match.cs" />
     <Compile Include="Matches\Score.cs" />
@@ -57,6 +56,9 @@
     <Compile Include="Team.cs" />
     <Compile Include="Exceptions\TeamNotInLeagueException.cs" />
     <Compile Include="Exceptions\UpdatedAFinishedMatchException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
