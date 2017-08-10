@@ -44,7 +44,7 @@ namespace Kata.Data
 
         public IEnumerable<Season> GetTable(int year)
         {
-            return Teams.Select(x => x.Seasons.FirstOrDefault(y => y.StartYear == year));
+            return Teams.Select(x => x.Seasons.FirstOrDefault(y => y.StartYear == year)).OrderByDescending(z => z?.Points);
         }
 
         private void AddMatch(Match match, int week)

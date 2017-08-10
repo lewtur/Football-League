@@ -31,12 +31,25 @@ namespace Kata.Data
         {
             Manager = manager;
         }
+
+        public void StartSeason(League league, int startYear)
+        {
+            Seasons.Add(new Season
+            {
+                Draws = 0,
+                Wins = 0,
+                Losses = 0,
+                League = league,
+                StartYear = startYear,
+                Team = this
+            });
+        }
     }
 
     public class Season
     {
-        public Team Team { get; set; }
         public League League { get; set; }
+        public Team Team { get; set; }
         public int StartYear { get; set; }
         public int Wins { get; set; }
         public int Draws { get; set; }

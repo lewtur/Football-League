@@ -14,7 +14,7 @@ namespace Kata.Tests
     {
         private readonly Team _burnley;
         private readonly Team _watford;
-        private readonly Player _andreGray;
+        private readonly Player _samVokes;
         private readonly Player _troyDeeney;
         private readonly League _league;
 
@@ -22,12 +22,14 @@ namespace Kata.Tests
         {
             _burnley = new Team("Burnley FC");
             _watford = new Team("Watford FC");
-            _andreGray = new Player("Andre", "Gray");
+            _samVokes = new Player("Sam", "Vokes");
             _troyDeeney = new Player("Troy", "Deeney");
 
-            _burnley.SignPlayer(_andreGray);
+            _burnley.SignPlayer(_samVokes);
             _watford.SignPlayer(_troyDeeney);
             _league = new League { Teams = new List<Team> { _burnley, _watford }, Id = 1, Name = "Premier League" };
+            _burnley.StartSeason(_league, 2017);
+            _watford.StartSeason(_league, 2017);
         }
 
         [TestMethod]
@@ -39,7 +41,7 @@ namespace Kata.Tests
 
             // When
             var match = _league.PlayMatch(_burnley, _watford, 1);
-            match.Event(new GoalScoredEvent(_andreGray), 12);
+            match.Event(new GoalScoredEvent(_samVokes), 12);
             match.End();
 
             // Then
@@ -56,7 +58,7 @@ namespace Kata.Tests
             
             // When
             var match = _league.PlayMatch(_burnley, _watford, 1);
-            match.Event(new GoalScoredEvent(_andreGray), 14);
+            match.Event(new GoalScoredEvent(_samVokes), 14);
             match.Event(new GoalScoredEvent(_troyDeeney), 84);
             match.End();
 
@@ -84,13 +86,13 @@ namespace Kata.Tests
         {
             // Given
             var match1 = _league.PlayMatch(_burnley, _watford, 1);
-            var match2 = _league.PlayMatch(_burnley, _watford, 1);
-            var match3 = _league.PlayMatch(_burnley, _watford, 1);
+            var match2 = _league.PlayMatch(_burnley, _watford, 2);
+            var match3 = _league.PlayMatch(_burnley, _watford, 3);
 
             // When
-            match1.Event(new GoalScoredEvent(_andreGray), 12);
+            match1.Event(new GoalScoredEvent(_samVokes), 12);
             match1.End();
-            match2.Event(new GoalScoredEvent(_andreGray), 34);
+            match2.Event(new GoalScoredEvent(_samVokes), 34);
             match2.Event(new GoalScoredEvent(_troyDeeney), 44);
             match2.End();
             match3.Event(new GoalScoredEvent(_troyDeeney), 60);
@@ -109,9 +111,9 @@ namespace Kata.Tests
             var match = _league.PlayMatch(_burnley, _watford, 1);
 
             // When
-            match.Event(new GoalScoredEvent(_andreGray), 23);
+            match.Event(new GoalScoredEvent(_samVokes), 23);
             match.End();
-            match.Event(new GoalScoredEvent(_andreGray), 28);
+            match.Event(new GoalScoredEvent(_samVokes), 28);
 
             // Then
             Assert.Fail("Exception should have been thrown - Can't change the score when a match has finished");
@@ -121,16 +123,16 @@ namespace Kata.Tests
         public void APlayerShouldBeAbleToScoreInAGame()
         {
             // Given
-            var andreGray = new Player("Andre", "Gray");
-            _burnley.SignPlayer(andreGray);
+            var SamVokes = new Player("Sam", "Vokes");
+            _burnley.SignPlayer(SamVokes);
 
             // When
             var match = _league.PlayMatch(_burnley, _watford, 1);
-            match.Event(new GoalScoredEvent(andreGray), 64);
+            match.Event(new GoalScoredEvent(SamVokes), 64);
             match.End();
 
             // Then
-            Assert.IsTrue(match.Goals.Any(x => x.Player.Name == "Andre Gray"));
+            Assert.IsTrue(match.Goals.Any(x => x.Player.Name == "Sam Vokes"));
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Kata.Tests
     {
         private readonly Team _burnley;
         private readonly Team _watford;
-        private readonly Player _andreGray;
+        private readonly Player _samVokes;
         private readonly Player _troyDeeney;
         private readonly League _league;
 
@@ -25,12 +25,14 @@ namespace Kata.Tests
         {
             _burnley = new Team("Burnley FC");
             _watford = new Team("Watford FC");
-            _andreGray = new Player("Andre", "Gray");
+            _samVokes = new Player("Sam", "Vokes");
             _troyDeeney = new Player("Troy", "Deeney");
 
-            _burnley.SignPlayer(_andreGray);
+            _burnley.SignPlayer(_samVokes);
             _watford.SignPlayer(_troyDeeney);
             _league = new League { Teams = new List<Team> { _burnley, _watford }, Id = 1, Name = "Premier League" };
+            _burnley.StartSeason(_league, 2017);
+            _watford.StartSeason(_league, 2017);
         }
 
         [TestMethod]
@@ -53,17 +55,17 @@ namespace Kata.Tests
         public void TheOrderedLeagueTableShouldBeRetrievableAtAnyTime()
         {
             // Given
-            PlayGame(1);
-            PlayGame(2);
-            PlayGame(3);
-            PlayGame(4);
+            for (var i = 1; i < 30 ; ++i)
+            {
+                PlayGame(i);
+            }
 
             // When
             var table = _league.GetTable(2017);
 
             // Then
             Assert.IsTrue(table.Count() == 2);
-            Assert.IsTrue(table.First().Points > table.Last().Points);
+            Assert.IsTrue(table.First().Points >= table.Last().Points);
 
         }
 
@@ -74,7 +76,7 @@ namespace Kata.Tests
 
             for (var i = 0; i < ran.Next(8); ++i)
             {
-                match.Event(ran.Next(2) == 1 ? new GoalScoredEvent(_andreGray) : new GoalScoredEvent(_troyDeeney), ran.Next(90));
+                match.Event(ran.Next(2) == 1 ? new GoalScoredEvent(_samVokes) : new GoalScoredEvent(_troyDeeney), ran.Next(90));
             }
 
             match.End();
