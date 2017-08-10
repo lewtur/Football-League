@@ -59,9 +59,9 @@
     <Compile Include="ManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kata.Data\Kata.Domain.csproj">
+    <ProjectReference Include="..\Kata.Data\Kata.Data.csproj">
       <Project>{BD4C19A6-905E-410A-8086-396B1F13E518}</Project>
-      <Name>Kata.Domain</Name>
+      <Name>Kata.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

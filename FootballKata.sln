@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kata.Domain", "Kata.Data\Kata.Domain.csproj", "{BD4C19A6-905E-410A-8086-396B1F13E518}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kata.Data", "Kata.Data\Kata.Data.csproj", "{BD4C19A6-905E-410A-8086-396B1F13E518}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kata.Tests", "Kata.Tests\Kata.Tests.csproj", "{FE257E19-D185-46D9-BCC3-71D5243B8F15}"
 EndProject
